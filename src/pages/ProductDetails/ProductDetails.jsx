@@ -9,12 +9,15 @@ import 'swiper/css';
 import Card from "../../components/Card/Card";
 import useOnline from "../../Hooks/useOnline";
 import { Helmet } from "react-helmet";
+import { WishlistContext } from "../../components/Context/Wishlist.context";
 
 export default function ProductDetails() {
     let { id } = useParams()
     const [detailsproduct, setdetailsproduct] = useState(null)
     const [relatedproducts, setrelatedproducts] = useState(null)
     let { AddProductToCart } = useContext(CartContext)
+    let { AddProductToWishlist } = useContext(WishlistContext)
+
 
     async function getproductsdetails() {
         try {
@@ -44,6 +47,12 @@ export default function ProductDetails() {
             console.log(error);
         }
     }
+    const [isWishlisted, setIsWishlisted] = useState(false);
+
+    const toggleWishlist = () => {
+        AddProductToWishlist({ productId: id });
+        setIsWishlisted(!isWishlisted);
+    };
 
     useEffect(() => {
         getproductsdetails()
@@ -89,11 +98,19 @@ export default function ProductDetails() {
                                 <span>{detailsproduct.price} L.E</span>
                                 <span><i className="fa-solid fa-star" style={{ color: "#ffc800" }}></i>{detailsproduct.ratingsAverage}</span>
                             </div>
-                            {isOnline ? <button
-                                onClick={() => {
-                                    AddProductToCart({ productId: id })
-                                }}
-                                className="btn bg-green-500 w-full hover:bg-green-600 transition-all duration-200">Add To Cart</button> : ""}
+                            {isOnline ? <div className="flex gap-3">
+                                <button
+                                    onClick={() => {
+                                        AddProductToCart({ productId: id })
+                                    }}
+                                    className="btn bg-green-500 w-full hover:bg-green-600 transition-all duration-200">Add To Cart</button>
+                                <div onClick={toggleWishlist} className="text-2xl cursor-pointer">
+                                    <i
+                                        className={`fa-solid fa-heart ${isWishlisted ? "text-black" : "text-green-500"
+                                            }`}
+                                    ></i>
+                                </div>
+                            </div> : ""}
                         </div>
                     </div>
                 </section>

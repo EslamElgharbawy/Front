@@ -22,18 +22,30 @@ export default function CategorySlider() {
     if (isLoading) return <Loading />
     return <>
         <section className="mt-24 mb-16">
-            <h2 className="font-semibold text-xl mb-3 py-1 ">Shop Popular Categories</h2>
-
-            <Swiper slidesPerView={6} loop={true} >
-                {data.data.data.map((category) => <SwiperSlide className="text-center" key={category._id}>
-                    <div className="h-64 mb-2">
-                        <img src={category.image} className="w-full h-full object-cover" />
-                    </div>
-                    <h2 className="font-semibold">{category.name}</h2>
-                </SwiperSlide>)}
+            <h2 className="font-semibold text-xl mb-3 py-1">Shop Popular Categories</h2>
+            <Swiper
+                loop={true}
+                breakpoints={{
+                    340: { slidesPerView: 1 }, 
+                    500: { slidesPerView: 2 }, 
+                    1280: { slidesPerView: 6 }, 
+                }}
+            >
+                {data.data.data.map((category) => (
+                    <SwiperSlide className="text-center" key={category._id}>
+                        <div className="h-64 mb-2">
+                            <img
+                                src={category.image}
+                                className="w-full h-full sm:max-2xl:object-contain 2xl:object-cover"
+                                alt={category.name}
+                            />
+                        </div>
+                        <h2 className="font-semibold">{category.name}</h2>
+                    </SwiperSlide>
+                ))}
             </Swiper>
-
         </section>
+
 
 
     </>

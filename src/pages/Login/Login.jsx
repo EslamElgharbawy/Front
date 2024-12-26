@@ -34,7 +34,7 @@ export default function Login() {
       if (data.message == "success") {
         localStorage.setItem("token", data.token)
         setToken(data.token)
-        toast.success("User Logged in Successfully")
+        toast.success("Welcome")
         setTimeout(() => {
           navigate("/")
         }, 2000);
